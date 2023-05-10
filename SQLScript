@@ -1,0 +1,205 @@
+CREATE TABLE Office (
+  OfficeNum INT PRIMARY KEY,
+  NUMofStaff INT,
+  NUMofPClients INT,
+  PhoneNum VARCHAR(25),
+  City VARCHAR(50)
+);
+
+CREATE TABLE AdminStaff (
+  AStaffID INT PRIMARY KEY,
+  OfficeNum INT,
+  JobDesc VARCHAR(50),
+  FName VARCHAR(50),
+  LName VARCHAR(50),
+  Address VARCHAR(100),
+  Sex VARCHAR(1),
+  DOB DATE,
+  PhoneNum VARCHAR(25),
+  FOREIGN KEY (OfficeNum) REFERENCES Office (OfficeNum)
+);
+
+CREATE TABLE TaxiStaff (
+  TStaffID INT PRIMARY KEY,
+  JobDesc VARCHAR(50),
+  FName VARCHAR(50),
+  LName VARCHAR(50),
+  Address VARCHAR(100),
+  Sex VARCHAR(1),
+  DOB DATE,
+  PhoneNum VARCHAR(25)
+);
+
+CREATE TABLE Taxi (
+  VIN VARCHAR(25) PRIMARY KEY,
+  TStaffID INT,
+  FOREIGN KEY (TStaffID) REFERENCES TaxiStaff (TStaffID)
+);
+
+CREATE TABLE PrivateClient (
+  PClientNum INT PRIMARY KEY,
+  FName VARCHAR(50),
+  LName VARCHAR(50),
+  PhoneNum VARCHAR(25)
+);
+
+CREATE TABLE BusinessClient (
+  BClientNum INT PRIMARY KEY,
+  FName VARCHAR(50),
+  LName VARCHAR(50),
+  PhoneNum VARCHAR(25)
+);
+
+CREATE TABLE Contract (
+  ContractNum INT PRIMARY KEY,
+  BClientNum INT,
+  NumofJobs INT,
+  OfficeNum INT,
+  FOREIGN KEY (BClientNum) REFERENCES BusinessClient (BClientNum),
+  FOREIGN KEY (OfficeNum) REFERENCES Office (OfficeNum)
+);
+
+CREATE TABLE Job (
+  JobID INT PRIMARY KEY,
+  ContractNum INT,
+  PClientNum INT,
+  TStaffID INT,
+  VIN VARCHAR(25),
+  PUDateTime TimeStamp,
+  PUAddress VARCHAR(100),
+  DOAddress VARCHAR(100),
+  Mileage INT,
+  Fee INT,
+  FOREIGN KEY (ContractNum) REFERENCES Contract (ContractNum),
+  FOREIGN KEY (PClientNum) REFERENCES PrivateClient (PClientNum),
+  FOREIGN KEY (VIN) REFERENCES Taxi (VIN),
+  FOREIGN KEY (TStaffID) REFERENCES TaxiStaff (TStaffID)
+);
+
+INSERT INTO Office (OfficeNum, NUMofStaff, NUMofPClients, PhoneNum, City) VALUES
+(1, 54, 102, '604-555-1234', 'New York');
+INSERT INTO Office (OfficeNum, NUMofStaff, NUMofPClients, PhoneNum, City) VALUES
+(2, 45, 112, '604-555-5678', 'Los Angeles');
+INSERT INTO Office (OfficeNum, NUMofStaff, NUMofPClients, PhoneNum, City) VALUES
+(3, 60, 142, '604-555-9876', 'Glasgow');
+INSERT INTO Office (OfficeNum, NUMofStaff, NUMofPClients, PhoneNum, City) VALUES
+(4, 34, 97, '604-555-4321', 'Houston');
+INSERT INTO Office (OfficeNum, NUMofStaff, NUMofPClients, PhoneNum, City) VALUES
+(5, 42, 109, '604-555-8765', 'Miami');
+INSERT INTO Office (OfficeNum, NUMofStaff, NUMofPClients, PhoneNum, City) VALUES
+(6, 51, 120, '604-555-2345', 'San Francisco');
+INSERT INTO Office (OfficeNum, NUMofStaff, NUMofPClients, PhoneNum, City) VALUES
+(7, 58, 125, '604-555-7890', 'Boston');
+
+INSERT INTO AdminStaff (AStaffID, OfficeNum, JobDesc, FName, LName, Address, Sex, DOB, PhoneNum) VALUES
+  (101, 1, 'Dispatch', 'John', 'Doe', '123 Main St', 'M', TO_DATE ('01-JAN-1990', 'DD-MON-YYYY'), '604-535-1234');
+INSERT INTO AdminStaff (AStaffID, OfficeNum, JobDesc, FName, LName, Address, Sex, DOB, PhoneNum) VALUES
+  (102, 1, 'Manager', 'Jane', 'Doel', '123 Main St', 'F', TO_DATE('02-FEB-1991', 'DD-MON-YYYY'), '604-575-5678');
+INSERT INTO AdminStaff (AStaffID, OfficeNum, JobDesc, FName, LName, Address, Sex, DOB, PhoneNum) VALUES
+  (103, 2, 'Manager', 'Bob', 'Smithe', '456 Elm St', 'M', TO_DATE('03-MAR-1992', 'DD-MON-YYYY'), '778-535-9012');
+INSERT INTO AdminStaff (AStaffID, OfficeNum, JobDesc, FName, LName, Address, Sex, DOB, PhoneNum) VALUES
+  (104, 3, 'Dispatch', 'Sue', 'John', '789 Oak St', 'F', TO_DATE('04-APR-1993', 'DD-MON-YYYY'), '778-555-3456');
+INSERT INTO AdminStaff (AStaffID, OfficeNum, JobDesc, FName, LName, Address, Sex, DOB, PhoneNum) VALUES
+  (105, 4, 'Manager', 'Tom', 'Brown', '246 Maple St', 'M', TO_DATE('05-MAY-1994', 'DD-MON-YYYY'), '778-555-7890');
+INSERT INTO AdminStaff (AStaffID, OfficeNum, JobDesc, FName, LName, Address, Sex, DOB, PhoneNum) VALUES
+  (106, 5, 'Manager', 'Lisa', 'Jones', '369 Pine St', 'F', TO_DATE('06-JUN-1995', 'DD-MON-YYYY'), '778-555-2345');
+INSERT INTO AdminStaff (AStaffID, OfficeNum, JobDesc, FName, LName, Address, Sex, DOB, PhoneNum) VALUES
+  (107, 6, 'Dispatch', 'Mike', 'Davis', '802 Walnut St', 'M', TO_DATE('07-JUL-1996', 'DD-MON-YYYY'), '778-555-6789');
+
+
+
+INSERT INTO TaxiStaff (TStaffID, JobDesc, FName, LName, Address, Sex, DOB, PhoneNum) VALUES
+  (108, 'Driver', 'John', 'Smith', '143 Main St', 'M', TO_DATE('01-JAN-1991', 'DD-MON-YYYY'), '778-555-1111');
+INSERT INTO TaxiStaff (TStaffID, JobDesc, FName, LName, Address, Sex, DOB, PhoneNum) VALUES
+  (109, 'Driver', 'Rob', 'Derek', '416 Elm St', 'M', TO_DATE('02-SEP-1993', 'DD-MON-YYYY'), '778-555-2222');
+INSERT INTO TaxiStaff (TStaffID, JobDesc, FName, LName, Address, Sex, DOB, PhoneNum) VALUES
+  (110, 'Owner', 'Bob', 'Johnson', '739 Oak St', 'M', TO_DATE('03-MAY-1992', 'DD-MON-YYYY'), '778-555-3333');
+INSERT INTO TaxiStaff (TStaffID, JobDesc, FName, LName, Address, Sex, DOB, PhoneNum) VALUES
+  (111, 'Owner', 'Sue', 'Williams', '276 Maple St', 'F', TO_DATE('04-FEB-1993', 'DD-MON-YYYY'), '778-555-4444');
+INSERT INTO TaxiStaff (TStaffID, JobDesc, FName, LName, Address, Sex, DOB, PhoneNum) VALUES
+  (112, 'Driver', 'Tom', 'Brady', '319 Pine St', 'M', TO_DATE('05-JUL-1994', 'DD-MON-YYYY'), '778-555-5555');
+INSERT INTO TaxiStaff (TStaffID, JobDesc, FName, LName, Address, Sex, DOB, PhoneNum) VALUES
+  (113, 'Driver', 'Lisa', 'James', '892 Walnut St', 'F', TO_DATE('06-APR-1995', 'DD-MON-YYYY'), '780-555-6666');
+INSERT INTO TaxiStaff (TStaffID, JobDesc, FName, LName, Address, Sex, DOB, PhoneNum) VALUES
+  (114, 'Owner', 'Mike', 'Shula', '1358 Cedar Ave', 'M', TO_DATE('07-JAN-1996', 'DD-MON-YYYY'), '780-555-7777');
+
+INSERT INTO Taxi (VIN, TStaffID) VALUES
+  ('ABC12323', 108);
+INSERT INTO Taxi (VIN, TStaffID) VALUES
+  ('DEF45116', 109);
+INSERT INTO Taxi (VIN, TStaffID) VALUES
+  ('GHI78569', 110);
+INSERT INTO Taxi (VIN, TStaffID) VALUES
+  ('JKL01222', 110);
+INSERT INTO Taxi (VIN, TStaffID) VALUES
+  ('MNO34335', 111);
+INSERT INTO Taxi (VIN, TStaffID) VALUES
+  ('PQR67788', 112);
+INSERT INTO Taxi (VIN, TStaffID) VALUES
+  ('STU90231', 113);
+INSERT INTO Taxi (VIN, TStaffID) VALUES
+  ('STU90134', 114);
+INSERT INTO Taxi (VIN, TStaffID) VALUES
+  ('STU90321', 111);
+INSERT INTO Taxi (VIN, TStaffID) VALUES
+  ('STU90541', 110);
+
+INSERT INTO PrivateClient (PClientNum, FName, LName, PhoneNum) VALUES
+  (201, 'Alice', 'Jones', '604-123-4567');
+INSERT INTO PrivateClient (PClientNum, FName, LName, PhoneNum) VALUES
+  (202, 'Bob', 'Smith', '778-234-5678');
+INSERT INTO PrivateClient (PClientNum, FName, LName, PhoneNum) VALUES
+  (203, 'Charlie', 'Brown', '604-345-6789');
+INSERT INTO PrivateClient (PClientNum, FName, LName, PhoneNum) VALUES
+  (204, 'David', 'Lee', '778-456-7890');
+INSERT INTO PrivateClient (PClientNum, FName, LName, PhoneNum) VALUES
+  (205, 'Emily', 'Davis', '604-567-8901');
+INSERT INTO PrivateClient (PClientNum, FName, LName, PhoneNum) VALUES
+  (206, 'Frank', 'Johnson', '778-678-9012');
+INSERT INTO PrivateClient (PClientNum, FName, LName, PhoneNum) VALUES
+  (207, 'Grace', 'Taylor', '604-789-0123');
+
+INSERT INTO BusinessClient (BClientNum, FName, LName, PhoneNum) VALUES
+  (301, 'John', 'Paul', '604-133-4567');
+INSERT INTO BusinessClient (BClientNum, FName, LName, PhoneNum) VALUES
+  (302, 'Jane', 'Irving', '778-204-5678');
+INSERT INTO BusinessClient (BClientNum, FName, LName, PhoneNum) VALUES
+  (303, 'Bob', 'Russell', '604-315-6789');
+INSERT INTO BusinessClient (BClientNum, FName, LName, PhoneNum) VALUES
+  (304, 'Sue', 'Leet', '778-426-7890');
+INSERT INTO BusinessClient (BClientNum, FName, LName, PhoneNum) VALUES
+  (305, 'Tom', 'Davison', '604-557-8901');
+INSERT INTO BusinessClient (BClientNum, FName, LName, PhoneNum) VALUES
+  (306, 'Lisa', 'Mahomes', '778-378-9012');
+INSERT INTO BusinessClient (BClientNum, FName, LName, PhoneNum) VALUES
+  (307, 'Mike', 'Henryr', '604-759-0123');
+
+INSERT INTO Contract (ContractNum, BClientNum, NumofJobs, OfficeNum) VALUES
+  (401, 301, 10, 1);
+INSERT INTO Contract (ContractNum, BClientNum, NumofJobs, OfficeNum) VALUES
+  (402, 302, 8, 2);
+INSERT INTO Contract (ContractNum, BClientNum, NumofJobs, OfficeNum) VALUES
+  (403, 303, 12, 3);
+INSERT INTO Contract (ContractNum, BClientNum, NumofJobs, OfficeNum) VALUES
+  (404, 305, 6, 4);
+INSERT INTO Contract (ContractNum, BClientNum, NumofJobs, OfficeNum) VALUES
+  (405, 307, 9, 5);
+INSERT INTO Contract (ContractNum, BClientNum, NumofJobs, OfficeNum) VALUES
+  (406, 304, 11, 6);
+INSERT INTO Contract (ContractNum, BClientNum, NumofJobs, OfficeNum) VALUES
+  (407, 306, 7, 7);
+
+INSERT INTO Job (JobID, ContractNum, PClientNum, TStaffID, VIN, PUDateTime, PUAddress, DOAddress, Mileage, Fee) VALUES
+  (501, 401, 201, 108, 'ABC12323', TO_DATE('2000-09-06 12:00:00', 'YYYY-MM-DD HH24:MI:SS'), '123 Park St', '416 Elm St', 10, 20);
+INSERT INTO Job (JobID, ContractNum, PClientNum, TStaffID, VIN, PUDateTime, PUAddress, DOAddress, Mileage, Fee) VALUES
+  (502, 402, 202, 109, 'DEF45116', TO_DATE('2023-04-07 14:00:00', 'YYYY-MM-DD HH24:MI:SS'), '456 Broad St', '789 Oak St', 15, 25);
+INSERT INTO Job (JobID, ContractNum, PClientNum, TStaffID, VIN, PUDateTime, PUAddress, DOAddress, Mileage, Fee) VALUES
+  (503, 403, 203, 110, 'GHI78569', TO_DATE('2000-09-08 16:00:00', 'YYYY-MM-DD HH24:MI:SS'), '739 Lake St', '216 Maple St', 20, 30);
+INSERT INTO Job (JobID, ContractNum, PClientNum, TStaffID, VIN, PUDateTime, PUAddress, DOAddress, Mileage, Fee) VALUES
+  (504, 404, 204, 112, 'JKL01222', TO_DATE('2020-04-09 18:00:00', 'YYYY-MM-DD HH24:MI:SS'), '296 Maple St', '349 Pole St', 25, 35);
+INSERT INTO Job (JobID, ContractNum, PClientNum, TStaffID, VIN, PUDateTime, PUAddress, DOAddress, Mileage, Fee) VALUES
+  (505, 405, 205, 111, 'MNO34335', TO_DATE('2003-04-10 20:00:00', 'YYYY-MM-DD HH24:MI:SS'), '319 Hort St', '892 Peal St', 30, 40);
+INSERT INTO Job (JobID, ContractNum, PClientNum, TStaffID, VIN, PUDateTime, PUAddress, DOAddress, Mileage, Fee) VALUES
+  (506, 406, 206, 113, 'STU90231', TO_DATE('2013-04-11 22:00:00', 'YYYY-MM-DD HH24:MI:SS'), '842 Walnut St', '158 Mitch Ave', 35, 45);
+INSERT INTO Job (JobID, ContractNum, PClientNum, TStaffID, VIN, PUDateTime, PUAddress, DOAddress, Mileage, Fee) VALUES
+  (507, 407, 207, 114, 'STU90134', TO_DATE('2010-04-12 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), '1358 Cedar Ave', '246 Maple St', 40, 51);
